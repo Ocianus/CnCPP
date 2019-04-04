@@ -4,14 +4,98 @@
 #include <fstream>
 using namespace std;
 
-class Member {
+class Person {
 public:
-    string firstName;
-    string lastName;
-    string memberID;
-    string phoneNumber;
-    string address;
-    string registrationDate;
+    string firstName, lastName, address, phoneNumber;
+};
+
+class Library {
+public:
+    string adress, employeeID, libraryID;
+
+};
+
+class Book {
+public:
+    string isbnNumber, auther, title, publishYear, publisher;
+
+    void bookGetInfo() {
+        cout << "Bookinformation" << endl;
+        cout << "________________" << endl;
+        cout << "ISBNnumber: " << isbnNumber << endl;
+        cout << "Auther: " << auther << endl;
+        cout << "Title: " << title << endl;
+        cout << "Year published: " << publishYear << endl;
+        cout << "Published by: " << publisher << endl;
+    }
+};
+
+class Librarian: public Person {
+public:
+    string startDate, salary, employeeID, libraryID;
+
+    void getLibrarianInfo() {
+        cout << "Information regarding librarian" << endl;
+        cout << "________________________________" << endl;
+        cout << "First name: " << firstName << endl;
+        cout << "Last name: " << lastName << endl;
+        cout << "Address: " << address << endl;
+        cout << "Phone number " << phoneNumber << endl;
+        cout << "Start date: " << startDate << endl;
+        cout << "Salary: " << salary << endl;
+        cout << "Employee ID: " << employeeID << endl;
+        cout << "Works at library: " << libraryID << endl;
+    }
+/*
+    void makeLibrarian() {
+        int id = 1;
+        Librarian librarian1;
+        ofstream fout;
+        string line;
+
+        fout.open("member.txt");
+        cout << "Welcome to registration. Please fill in the information below: " << endl;
+        while(fout) {
+            cout << "Enter 0 if you no longer wish to add more members,"
+                    "if you wish to proceed adding new member press any key: " << endl;
+            getline(cin, line);
+            if(line == "0") {
+                break;
+            }
+            cout << "Enter your first name: " << endl;
+            getline(cin, firstName);
+            cout << "Enter your last name: " << endl;
+            getline(cin, lastName);
+            cout << "Enter your address: " << endl;
+            getline(cin, address);
+            cout << "Enter your phone number: " << endl;
+            getline(cin, phoneNumber);
+
+            fout << "First name: " <<firstName << endl;
+            fout << "Last name: " << lastName << endl;
+            fout << "Address: " << address << endl;
+            fout << "Phone: " << phoneNumber << endl;
+            fout << "MemberID: " << id << endl;
+            time_t tt; struct tm * ti; time(&tt); ti = localtime(&tt);
+            librarian1.startDate = asctime(ti);
+            fout << "Time hired: " << librarian1.startDate << endl;
+            id++;
+        }
+        fout.close();
+        ifstream fin;
+        fin.open("member.txt");
+
+        while(fin) {
+            getline(fin, line);
+            cout << line << endl;
+        }
+        fin.close();
+    } */
+};
+
+class Member: public Person {
+public:
+    string memberID, registrationDate;
 
     void getMemberInfo() {
         cout << "Member information" << endl;
@@ -28,9 +112,9 @@ public:
         int id = 1;
         Member member1;
         ofstream fout;
-        string fname, lname, add, pnumber, line;
+        string line;
 
-        fout.open("sample.txt");
+        fout.open("member.txt");
         cout << "Welcome to registration. Please fill in the information below: " << endl;
         while(fout) {
             cout << "Enter 0 if you no longer wish to add more members,"
@@ -40,18 +124,18 @@ public:
                 break;
             }
             cout << "Enter your first name: " << endl;
-            getline(cin, fname);
+            getline(cin, firstName);
             cout << "Enter your last name: " << endl;
-            getline(cin, lname);
+            getline(cin, lastName);
             cout << "Enter your address: " << endl;
-            getline(cin, add);
+            getline(cin, address);
             cout << "Enter your phone number: " << endl;
-            getline(cin, pnumber);
+            getline(cin, phoneNumber);
 
-            fout << "First name: " <<fname << endl;
-            fout << "Last name: " << lname << endl;
-            fout << "Address: " << add << endl;
-            fout << "Phone: " << pnumber << endl;
+            fout << "First name: " <<firstName << endl;
+            fout << "Last name: " << lastName << endl;
+            fout << "Address: " << address << endl;
+            fout << "Phone: " << phoneNumber << endl;
             fout << "MemberID: " << id << endl;
             time_t tt; struct tm * ti; time(&tt); ti = localtime(&tt);
             member1.registrationDate = asctime(ti);
@@ -60,7 +144,7 @@ public:
         }
         fout.close();
         ifstream fin;
-        fin.open("sample.txt");
+        fin.open("member.txt");
 
         while(fin) {
             getline(fin, line);
@@ -70,14 +154,10 @@ public:
     }
 };
 
-class Renter {
+class Renter: public Person{
 public:
-    string firstName;
-    string lastName;
-    bool depositum;
-    string phoneNumber;
-    string address;
     string rentTime;
+    bool depositum;
 
     void getRenterInfo() {
         cout << "Renter information" << endl;
@@ -87,16 +167,19 @@ public:
         cout << "Phonenumber name: " << phoneNumber << endl;
         cout << "Address name: " << address << endl;
         cout << boolalpha;
-        cout << "Depositum " << depositum << endl;
+        cout << "Depositum: " << depositum << endl;
+        time_t tt; struct tm * ti; time(&tt); ti = localtime(&tt);
+        rentTime = asctime(ti);
+        cout << "Registered: " << rentTime << endl;
     }
 
     void makeRenter() {
         Renter renter1;
         ofstream fout;
-        string fname, lname, add, pnumber, line, depositum;
+        string line, depositum;
 
 
-        fout.open("sample.txt");
+        fout.open("renter.txt");
         cout << "Welcome to registration. Please fill in the information below: " << endl;
         while(fout) {
             cout << "Enter 0 if you no longer wish to add more renters,"
@@ -106,36 +189,38 @@ public:
                 break;
             }
             cout << "Enter your first name: " << endl;
-            getline(cin, fname);
+            getline(cin, firstName);
             cout << "Enter your last name: " << endl;
-            getline(cin, lname);
+            getline(cin, lastName);
             cout << "Enter your address: " << endl;
-            getline(cin, add);
+            getline(cin, address);
             cout << "Enter your phone number: " << endl;
-            getline(cin, pnumber);
+            getline(cin, phoneNumber);
             /**
              * Bedre om det blir skrevet ut true eller false
              */
             cout << "Has the renter payed depositum? " << endl;
             getline(cin, depositum);
 
-            fout << "First name: " <<fname << endl;
-            fout << "Last name: " << lname << endl;
-            fout << "Address: " << add << endl;
-            fout << "Phone: " << pnumber << endl;
+            fout << "First name: " <<firstName << endl;
+            fout << "Last name: " << lastName << endl;
+            fout << "Address: " << address << endl;
+            fout << "Phone: " << phoneNumber << endl;
             fout << "Depositum payed: " << depositum << endl;
             time_t tt; struct tm * ti; time(&tt); ti = localtime(&tt);
             renter1.rentTime = asctime(ti);
             fout << "Time registered: " << renter1.rentTime << endl;
         }
+
         fout.close();
         ifstream fin;
-        fin.open("sample.txt");
+        fin.open("renter.txt");
 
         while(fin) {
             getline(fin, line);
             cout << line << endl;
         }
+
         fin.close();
     };
 };
@@ -143,12 +228,23 @@ public:
 int main() {
     Renter renter1;
     renter1.makeRenter();
+    renter1.getRenterInfo();
 
     //Member member1;
     //member1.makeMember();
 
     return 0;
 }
+
+
+
+
+
+
+
+
+
+
 
 /*
 
@@ -215,5 +311,4 @@ void bookRent() {
                 break;
         }
     }
-
 */
