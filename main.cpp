@@ -17,7 +17,7 @@ public:
 
 class Book {
 public:
-    string isbnNumber, auther, title, publishYear, publisher;
+    string isbnNumber, auther, title, publishYear, publisher, pages;
 
     void bookGetInfo() {
         cout << "Bookinformation" << endl;
@@ -25,6 +25,7 @@ public:
         cout << "ISBNnumber: " << isbnNumber << endl;
         cout << "Auther: " << auther << endl;
         cout << "Title: " << title << endl;
+        cout << "Number of pages: " << pages << endl;
         cout << "Year published: " << publishYear << endl;
         cout << "Published by: " << publisher << endl;
     }
@@ -32,7 +33,8 @@ public:
 
 class Librarian: public Person {
 public:
-    string startDate, salary, employeeID, libraryID;
+    string startDate, salary, libraryID;
+    int employeeID = 1;
 
     void getLibrarianInfo() {
         cout << "Information regarding librarian" << endl;
@@ -46,14 +48,14 @@ public:
         cout << "Employee ID: " << employeeID << endl;
         cout << "Works at library: " << libraryID << endl;
     }
-/*
+
     void makeLibrarian() {
-        int id = 1;
+        int employeeID = 1;
         Librarian librarian1;
         ofstream fout;
         string line;
 
-        fout.open("member.txt");
+        fout.open("librarian.txt", std::ios_base::app);
         cout << "Welcome to registration. Please fill in the information below: " << endl;
         while(fout) {
             cout << "Enter 0 if you no longer wish to add more members,"
@@ -70,27 +72,43 @@ public:
             getline(cin, address);
             cout << "Enter your phone number: " << endl;
             getline(cin, phoneNumber);
+            cout << "Enter the library the employee will be working at " << endl;
+            getline(cin, libraryID);
 
             fout << "First name: " <<firstName << endl;
             fout << "Last name: " << lastName << endl;
             fout << "Address: " << address << endl;
             fout << "Phone: " << phoneNumber << endl;
-            fout << "MemberID: " << id << endl;
+            fout << "EmployeeID: " << employeeID << endl;
+            fout << "Works at library: " << libraryID << endl;
             time_t tt; struct tm * ti; time(&tt); ti = localtime(&tt);
             librarian1.startDate = asctime(ti);
             fout << "Time hired: " << librarian1.startDate << endl;
-            id++;
+            employeeID++;
         }
         fout.close();
         ifstream fin;
-        fin.open("member.txt");
+        fin.open("librarian.txt");
 
         while(fin) {
             getline(fin, line);
             cout << line << endl;
         }
         fin.close();
-    } */
+    }
+
+    void listLibrarians() {
+        ifstream fout;
+        fout.open("librarian.txt");
+        if(!fout) {
+            cerr << "Unable to open the file librarian.txt";
+            exit(1);
+        }
+
+        if(fout.is_open()) {
+            cout << fout.rdbuf();
+        }
+    }
 };
 
 class Member: public Person {
@@ -114,7 +132,7 @@ public:
         ofstream fout;
         string line;
 
-        fout.open("member.txt");
+        fout.open("member.txt", std::ios_base::app);
         cout << "Welcome to registration. Please fill in the information below: " << endl;
         while(fout) {
             cout << "Enter 0 if you no longer wish to add more members,"
@@ -152,6 +170,19 @@ public:
         }
         fin.close();
     }
+
+    void listMembers() {
+        ifstream fout;
+        fout.open("member.txt");
+        if(!fout) {
+            cerr << "Unable to open the file member.txt";
+            exit(1);
+        }
+
+        if(fout.is_open()) {
+            cout << fout.rdbuf();
+        }
+    }
 };
 
 class Renter: public Person{
@@ -179,7 +210,7 @@ public:
         string line, depositum;
 
 
-        fout.open("renter.txt");
+        fout.open("renter.txt", std::ios_base::app);
         cout << "Welcome to registration. Please fill in the information below: " << endl;
         while(fout) {
             cout << "Enter 0 if you no longer wish to add more renters,"
@@ -222,21 +253,37 @@ public:
         }
 
         fin.close();
-    };
+    }
+
+    void listRenters() {
+        ifstream fout;
+        fout.open("renter.txt");
+        if(!fout) {
+            cerr << "Unable to open the file renter.txt";
+            exit(1);
+        }
+
+        if(fout.is_open()) {
+            cout << fout.rdbuf();
+        }
+    }
+
+
 };
 
 int main() {
-    Renter renter1;
-    renter1.makeRenter();
-    renter1.getRenterInfo();
+    //Renter renter1;
+    //renter1.makeRenter();
+    //renter1.getRenterInfo();
 
     //Member member1;
     //member1.makeMember();
 
+    Librarian librarian;
+    //librarian.makeLibrarian();
+    librarian.listLibrarians();
     return 0;
 }
-
-
 
 
 
