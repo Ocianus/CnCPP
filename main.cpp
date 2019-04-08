@@ -17,19 +17,90 @@ public:
 
 class Book {
 public:
-    string isbnNumber, auther, title, publishYear, publisher, pages;
+    string isbnNumber, author, title, publishYear, pages;
 
     void bookGetInfo() {
         cout << "Bookinformation" << endl;
         cout << "________________" << endl;
         cout << "ISBNnumber: " << isbnNumber << endl;
-        cout << "Auther: " << auther << endl;
+        cout << "Auther: " << author << endl;
         cout << "Title: " << title << endl;
         cout << "Number of pages: " << pages << endl;
         cout << "Year published: " << publishYear << endl;
-        cout << "Published by: " << publisher << endl;
+    }
+
+    void addBook() {
+        Book book;
+        ofstream fout;
+        string line;
+
+        fout.open("books.txt", std::ios_base::app);
+        cout << "Welcome to registration. Please enter the values of the book you wish"
+                "to add to the shelf " << endl;
+
+        while (fout) {
+            cout << "Enter 0 if you no longer wish to add more books,"
+                    "if you wish to proceed adding new book press any key: " << endl;
+            getline(cin, line);
+            if (line == "0") {
+                break;
+            }
+            cout << "Enter ISBN number: " << endl;
+            getline(cin, isbnNumber);
+            cout << "Enter name of the author: " << endl;
+            getline(cin, author);
+            cout << "Enter title of the book: " << endl;
+            getline(cin, title);
+            cout << "Enter the number of pages: " << endl;
+            getline(cin, pages);
+            cout << "Enter the year the book was published: " << endl;
+            getline(cin, publishYear);
+
+            fout << "ISBN number: " << isbnNumber << endl;
+            fout << "Author: " << author << endl;
+            fout << "Title: " << title << endl;
+            fout << "Number of pages: " << pages << endl;
+            fout << "Publish year: " << publishYear << endl;
+            //fout << "Date added to library: " << libraryID << endl;
+            //time_t tt; struct tm * ti; time(&tt); ti = localtime(&tt);
+            //librarian1.startDate = asctime(ti);
+            fout << endl;
+            cout << "Book successfully added!" << endl;
+        }
+        fout.close();
+        ifstream fin;
+        fin.open("books.txt");
+
+        cout << "Do you wish to list all the books in the system? If so enter 1"
+                ", if not enter 0 to exit";
+        getline(cin, line);
+        if (line == "1") {
+            while (fin) {
+                getline(fin, line);
+                cout << line << endl;
+            }
+            fin.close();
+        } else {
+            cout << "You chose to not list any books. Have a nice day." << endl;
+        }
+    }
+
+    void listBooks() {
+        ifstream fout;
+        fout.open("books.txt");
+        if(!fout) {
+            cerr << "Unable to open the file books.txt";
+            exit(1);
+        }
+
+        if(fout.is_open()) {
+            cout << fout.rdbuf();
+        }
     }
 };
+
+
+
 
 class Librarian: public Person {
 public:
@@ -49,6 +120,9 @@ public:
         cout << "Works at library: " << libraryID << endl;
     }
 
+    /**
+     * EmployeeID fungerer ikke
+     */
     void makeLibrarian() {
         int employeeID = 1;
         Librarian librarian1;
@@ -57,6 +131,7 @@ public:
 
         fout.open("librarian.txt", std::ios_base::app);
         cout << "Welcome to registration. Please fill in the information below: " << endl;
+
         while(fout) {
             cout << "Enter 0 if you no longer wish to add more members,"
                     "if you wish to proceed adding new member press any key: " << endl;
@@ -85,16 +160,25 @@ public:
             librarian1.startDate = asctime(ti);
             fout << "Time hired: " << librarian1.startDate << endl;
             employeeID++;
+            cout << "Librarian successfully added!" << endl;
         }
         fout.close();
         ifstream fin;
         fin.open("librarian.txt");
 
-        while(fin) {
-            getline(fin, line);
-            cout << line << endl;
+        cout << "Do you wish to list all the librarians? If so enter 1"
+                ", if not enter 0 to exit";
+        getline(cin, line);
+        if (line == "1") {
+            while(fin) {
+                getline(fin, line);
+                cout << line << endl;
+            }
+            fin.close();
+        } else {
+            cout << "You chose to not list any librarians. Have a nice day." << endl;
         }
-        fin.close();
+
     }
 
     void listLibrarians() {
@@ -159,16 +243,23 @@ public:
             member1.registrationDate = asctime(ti);
             fout << "Time registered: " << member1.registrationDate << endl;
             id++;
+            cout << "Member successfully added!" << endl;
         }
         fout.close();
         ifstream fin;
         fin.open("member.txt");
 
-        while(fin) {
-            getline(fin, line);
-            cout << line << endl;
+        cout << "Do you wish to list all the librarians? If so enter 1"
+                ", if not enter 0 to exit";
+        getline(cin, line);
+        if(line == "1") {
+            while (fin) {
+                getline(fin, line);
+                cout << line << endl;
+            }
+            cout << "You chose to not list any librarians. Have a nice day." << endl;
+            fin.close();
         }
-        fin.close();
     }
 
     void listMembers() {
@@ -241,18 +332,25 @@ public:
             time_t tt; struct tm * ti; time(&tt); ti = localtime(&tt);
             renter1.rentTime = asctime(ti);
             fout << "Time registered: " << renter1.rentTime << endl;
+            cout << "Renter successfully added!" << endl;
         }
 
         fout.close();
         ifstream fin;
         fin.open("renter.txt");
 
-        while(fin) {
-            getline(fin, line);
-            cout << line << endl;
-        }
+        cout << "Do you wish to list all the librarians? If so enter 1"
+                ", if not enter 0 to exit";
+        getline(cin, line);
 
-        fin.close();
+        if(line == "1") {
+            while(fin) {
+                getline(fin, line);
+                cout << line << endl;
+            }
+            cout << "You chose to not list any librarians. Have a nice day." << endl;
+            fin.close();
+        }
     }
 
     void listRenters() {
@@ -268,20 +366,72 @@ public:
         }
     }
 
+    /**
+     * removeRenter() fungerer ikke
+     */
 
+/*
+    void removeRenter() {
+        string line, name;
+        cout << "Please enter the name of record you want to delete: ";
+        cin >> name;
+        ifstream myfile;
+        myfile.open("renter.txt");
+        ofstream temp;
+        temp.open("temp.txt");
+        while(getline(myfile, line)){
+            if (line.substr(0, name.size()) != name) {
+                temp << line << endl;
+            }
+            cout << "The record with the name " << name << " has been deleted if it existed" << endl;
+            myfile.close();
+            temp.close();
+            remove("renter.txt");
+            rename("temp.txt", "renter.txt");
+
+            //system("pause");
+        }
+    }
+*/
+
+    /*
+    void removeRenter() {
+        string deleteLine;
+        string line;
+
+        ifstream fin;
+        fin.open("renter.txt");
+        ofstream temp;
+        temp.open("temp.txt");
+        cout << "Enter the last name of the renter you wish to remove";
+        cin >> deleteLine;
+        while(getline(fin, line)) {
+            line.replace(line.find(deleteLine),deleteLine.length(),"");
+            temp << line << endl;
+        }
+        temp.close();
+        fin.close();
+        remove("renter.txt");
+        rename("temp.txt", "renter.txt");
+        cout << endl;
+    } */
 };
 
 int main() {
-    //Renter renter1;
+    Renter renter1;
     //renter1.makeRenter();
     //renter1.getRenterInfo();
+    //renter1.removeRenter();
 
     //Member member1;
     //member1.makeMember();
 
-    Librarian librarian;
+    //Librarian librarian;
     //librarian.makeLibrarian();
-    librarian.listLibrarians();
+    //librarian.listLibrarians();
+
+    Book book;
+    book.addBook();
     return 0;
 }
 
