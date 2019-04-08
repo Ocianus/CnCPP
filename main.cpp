@@ -100,8 +100,6 @@ public:
 };
 
 
-
-
 class Librarian: public Person {
 public:
     string startDate, salary, libraryID;
@@ -434,78 +432,3 @@ int main() {
     book.addBook();
     return 0;
 }
-
-
-
-
-
-
-
-
-
-/*
-
-void menu();
-void bookRent();
-
-
-void menu() {
-    int choice;
-    bool menuOn = true;
-
-    while (menuOn != false) {
-        cout << "***\n";
-        cout << " 1 - Rent a book\n";
-        cout << " 2 - \n";
-        cout << " 3 - \n";
-        cout << " 4 - \n";
-        cout << " 5 - Exit\n";
-        cout << "Enter a number and press enter\n";
-        cin >> choice;
-
-        switch (choice) {
-            case 1:
-                cout << "Directing you to renting site...\n" << flush;
-                bookRent();
-                break;
-            case 2:
-                cout << "";
-                break;
-            case 3:
-                cout << "";
-                break;
-            case 4:
-                cout << "";
-                break;
-            case 5:
-                cout << "Exiting program...\n";
-                menuOn = false;
-                break;
-            default:
-                cout << "Not a valid choice.";
-                cout << "Choose agian.";
-                cin >> choice;
-                break;
-        }
-    }
-}
-
-void bookRent() {
-    system("CLS");
-    cout << "Choose the book you want to rent: ";
-    bool bookRentMenu = true;
-    int choice;
-    while (bookRentMenu != false) {
-        cin >> choice;
-        switch (choice) {
-            case 1:
-                cout << "";
-                break;
-            default:
-                cout << "Not a valid choice.";
-                cout << "Choose agian.";
-                cin >> choice;
-                break;
-        }
-    }
-*/
