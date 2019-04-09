@@ -11,7 +11,7 @@ public:
 
 class Library {
 public:
-    string adress, employeeID, libraryID;
+    string adress, libraryID, libraryName;
 
 };
 
@@ -37,7 +37,7 @@ public:
         fout.open("books.txt", std::ios_base::app);
         cout << "Welcome to registration. Please enter the values of the book you wish"
                 "to add to the shelf " << endl;
-
+        fout << "Title - " << "ISBN - " << "Author - " << "Pages - " << "Publish year" << endl;
         while (fout) {
             cout << "Enter 0 if you no longer wish to add more books,"
                     "if you wish to proceed adding new book press any key: " << endl;
@@ -45,22 +45,18 @@ public:
             if (line == "0") {
                 break;
             }
-            cout << "Enter ISBN number: " << endl;
-            getline(cin, isbnNumber);
-            cout << "Enter name of the author: " << endl;
-            getline(cin, author);
             cout << "Enter title of the book: " << endl;
             getline(cin, title);
+            cout << "Enter ISBN number: " << endl;
+            getline(cin, isbnNumber);
+            cout << "Enter name of author: " << endl;
+            getline(cin, author);
             cout << "Enter the number of pages: " << endl;
             getline(cin, pages);
             cout << "Enter the year the book was published: " << endl;
             getline(cin, publishYear);
 
-            fout << "ISBN number: " << isbnNumber << endl;
-            fout << "Author: " << author << endl;
-            fout << "Title: " << title << endl;
-            fout << "Number of pages: " << pages << endl;
-            fout << "Publish year: " << publishYear << endl;
+            fout << title << " - " << isbnNumber << " - " << author << " - " << pages << " - " << publishYear << endl;
             //fout << "Date added to library: " << libraryID << endl;
             //time_t tt; struct tm * ti; time(&tt); ti = localtime(&tt);
             //librarian1.startDate = asctime(ti);
@@ -95,6 +91,38 @@ public:
 
         if(fout.is_open()) {
             cout << fout.rdbuf();
+        }
+    }
+
+    void removeBook() {
+        string name, fname, lname, phone, address, date, a6, a7, a8, a9, a10, a11;
+        int x = 0;
+
+        ifstream book("books.txt");
+        ofstream temp("temp.txt");
+
+        cout << "Enter name of the book you want to erase from database >" << endl;
+        cin >> fname;
+
+        while(book >> name >> lname >> phone >> address >> date >> a6 >> a7 >> a8 >> a9 >> a10 >> a11) {
+            if(fname!=name) {
+                temp << name << ' ' << lname << ' ' << phone << ' ' << address << ' ' << date
+                     << ' ' << a6 << ' ' << a7 << ' ' << a8 << ' ' << a9 << ' ' << a10 << ' ' << a11 <<endl;
+            } if(fname==name) {
+                x = 1;
+            }
+        }
+
+        book.clear();
+        book.seekg(0, ios::beg);
+        book.close();
+        temp.close();
+        remove("books.txt");
+        rename("temp.txt", "books.txt");
+        if(x==0) {
+            cout << "There is no book with the name you entered." << endl;
+        } else {
+            cout << "Book data has been deleted" << endl;
         }
     }
 };
@@ -191,6 +219,38 @@ public:
             cout << fout.rdbuf();
         }
     }
+
+    void removeLibrarian() {
+        string name, fname, lname, phone, address, date, a6, a7, a8, a9, a10, a11;
+        int x = 0;
+
+        ifstream librarian("librarian.txt");
+        ofstream temp("temp.txt");
+
+        cout << "Enter name of the librarian you want to erase from database >" << endl;
+        cin >> fname;
+
+        while(librarian >> name >> lname >> phone >> address >> date >> a6 >> a7 >> a8 >> a9 >> a10 >> a11) {
+            if(fname!=name) {
+                temp << name << ' ' << lname << ' ' << phone << ' ' << address << ' ' << date
+                     << ' ' << a6 << ' ' << a7 << ' ' << a8 << ' ' << a9 << ' ' << a10 << ' ' << a11 <<endl;
+            } if(fname==name) {
+                x = 1;
+            }
+        }
+
+        librarian.clear();
+        librarian.seekg(0, ios::beg);
+        librarian.close();
+        temp.close();
+        remove("librarian.txt");
+        rename("temp.txt", "librarian.txt");
+        if(x==0) {
+            cout << "There is no librarian with the name you entered." << endl;
+        } else {
+            cout << "Librarian data has been deleted" << endl;
+        }
+    }
 };
 
 class Member: public Person {
@@ -272,6 +332,38 @@ public:
             cout << fout.rdbuf();
         }
     }
+
+    void removeMember() {
+        string name, fname, lname, phone, address, date, a6, a7, a8, a9, a10, a11;
+        int x = 0;
+
+        ifstream member("member.txt");
+        ofstream temp("temp.txt");
+
+        cout << "Enter name of the member you want to erase from database >" << endl;
+        cin >> fname;
+
+        while(member >> name >> lname >> phone >> address >> date >> a6 >> a7 >> a8 >> a9 >> a10 >> a11) {
+            if(fname!=name) {
+                temp << name << ' ' << lname << ' ' << phone << ' ' << address << ' ' << date
+                     << ' ' << a6 << ' ' << a7 << ' ' << a8 << ' ' << a9 << ' ' << a10 << ' ' << a11 <<endl;
+            } if(fname==name) {
+                x = 1;
+            }
+        }
+
+        member.clear();
+        member.seekg(0, ios::beg);
+        member.close();
+        temp.close();
+        remove("renter.txt");
+        rename("temp.txt", "renter.txt");
+        if(x==0) {
+            cout << "There is no member with the name you entered." << endl;
+        } else {
+            cout << "Member data has been deleted" << endl;
+        }
+    }
 };
 
 class Renter: public Person{
@@ -298,9 +390,9 @@ public:
         ofstream fout;
         string line, depositum;
 
-
         fout.open("renter.txt", std::ios_base::app);
         cout << "Welcome to registration. Please fill in the information below: " << endl;
+        fout << "First name Last name Address Phonenumber Depositum Rent time" << endl;
         while(fout) {
             cout << "Enter 0 if you no longer wish to add more renters,"
                     "if you wish to proceed adding new renter press any key: " << endl;
@@ -322,14 +414,10 @@ public:
             cout << "Has the renter payed depositum? " << endl;
             getline(cin, depositum);
 
-            fout << "First name: " <<firstName << endl;
-            fout << "Last name: " << lastName << endl;
-            fout << "Address: " << address << endl;
-            fout << "Phone: " << phoneNumber << endl;
-            fout << "Depositum payed: " << depositum << endl;
             time_t tt; struct tm * ti; time(&tt); ti = localtime(&tt);
             renter1.rentTime = asctime(ti);
-            fout << "Time registered: " << renter1.rentTime << endl;
+            fout << firstName << " " << lastName << " " << address << " " << phoneNumber
+            << " " << depositum << " " << renter1.rentTime;
             cout << "Renter successfully added!" << endl;
         }
 
@@ -337,7 +425,7 @@ public:
         ifstream fin;
         fin.open("renter.txt");
 
-        cout << "Do you wish to list all the librarians? If so enter 1"
+        cout << "Do you wish to list all the renters? If so enter 1"
                 ", if not enter 0 to exit";
         getline(cin, line);
 
@@ -346,7 +434,7 @@ public:
                 getline(fin, line);
                 cout << line << endl;
             }
-            cout << "You chose to not list any librarians. Have a nice day." << endl;
+            cout << "You chose to not list any renter. Have a nice day." << endl;
             fin.close();
         }
     }
@@ -364,55 +452,37 @@ public:
         }
     }
 
-    /**
-     * removeRenter() fungerer ikke
-     */
-
-/*
     void removeRenter() {
-        string line, name;
-        cout << "Please enter the name of record you want to delete: ";
-        cin >> name;
-        ifstream myfile;
-        myfile.open("renter.txt");
-        ofstream temp;
-        temp.open("temp.txt");
-        while(getline(myfile, line)){
-            if (line.substr(0, name.size()) != name) {
-                temp << line << endl;
+        string name, fname, lname, phone, address, date, a6, a7, a8, a9, a10, a11;
+        int x = 0;
+
+        ifstream renter("renter.txt");
+        ofstream temp("temp.txt");
+
+        cout << "Enter name of the renter you want to erase from database >" << endl;
+        cin >> fname;
+
+        while(renter >> name >> lname >> phone >> address >> date >> a6 >> a7 >> a8 >> a9 >> a10 >> a11) {
+            if(fname!=name) {
+                temp << name << ' ' << lname << ' ' << phone << ' ' << address << ' ' << date
+                << ' ' << a6 << ' ' << a7 << ' ' << a8 << ' ' << a9 << ' ' << a10 << ' ' << a11 <<endl;
+            } if(fname==name) {
+                x = 1;
             }
-            cout << "The record with the name " << name << " has been deleted if it existed" << endl;
-            myfile.close();
-            temp.close();
-            remove("renter.txt");
-            rename("temp.txt", "renter.txt");
-
-            //system("pause");
         }
-    }
-*/
 
-    /*
-    void removeRenter() {
-        string deleteLine;
-        string line;
-
-        ifstream fin;
-        fin.open("renter.txt");
-        ofstream temp;
-        temp.open("temp.txt");
-        cout << "Enter the last name of the renter you wish to remove";
-        cin >> deleteLine;
-        while(getline(fin, line)) {
-            line.replace(line.find(deleteLine),deleteLine.length(),"");
-            temp << line << endl;
-        }
+        renter.clear();
+        renter.seekg(0, ios::beg);
+        renter.close();
         temp.close();
-        fin.close();
         remove("renter.txt");
         rename("temp.txt", "renter.txt");
-        cout << endl;
-    } */
+        if(x==0) {
+            cout << "There is no renter with the name you entered." << endl;
+        } else {
+            cout << "Renter data has been deleted" << endl;
+        }
+    }
 };
 
 int main() {
@@ -429,6 +499,7 @@ int main() {
     //librarian.listLibrarians();
 
     Book book;
-    book.addBook();
+    //book.addBook();
+    book.removeBook();
     return 0;
 }
