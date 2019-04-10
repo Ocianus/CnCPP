@@ -392,7 +392,18 @@ public:
 
         fout.open("renter.txt", std::ios_base::app);
         cout << "Welcome to registration. Please fill in the information below: " << endl;
-        fout << "First name Last name Address Phonenumber Depositum Rent time" << endl;
+
+        /**
+         * Legg til koden under i andre metodene
+         */
+        if(fout.is_open()) {
+            fout.seekp(0, ios::end);
+            size_t size = fout.tellp();
+            if(size == 0) {
+                fout << "First name - Last name - Address - Phonenumber - Depositum - Rent time" << endl;
+            }
+        }
+
         while(fout) {
             cout << "Enter 0 if you no longer wish to add more renters,"
                     "if you wish to proceed adding new renter press any key: " << endl;
@@ -416,8 +427,8 @@ public:
 
             time_t tt; struct tm * ti; time(&tt); ti = localtime(&tt);
             renter1.rentTime = asctime(ti);
-            fout << firstName << " " << lastName << " " << address << " " << phoneNumber
-            << " " << depositum << " " << renter1.rentTime;
+            fout << firstName << " - " << lastName << " - " << address << " - " << phoneNumber
+            << " - " << depositum << " - " << renter1.rentTime;
             cout << "Renter successfully added!" << endl;
         }
 
@@ -464,8 +475,8 @@ public:
 
         while(renter >> name >> lname >> phone >> address >> date >> a6 >> a7 >> a8 >> a9 >> a10 >> a11) {
             if(fname!=name) {
-                temp << name << ' ' << lname << ' ' << phone << ' ' << address << ' ' << date
-                << ' ' << a6 << ' ' << a7 << ' ' << a8 << ' ' << a9 << ' ' << a10 << ' ' << a11 <<endl;
+                temp << name << ' - ' << lname << ' - ' << phone << ' - ' << address << ' - ' << date
+                << ' - ' << a6 << ' - ' << a7 << ' - ' << a8 << ' - ' << a9 << ' - ' << a10 << ' - ' << a11 <<endl;
             } if(fname==name) {
                 x = 1;
             }
@@ -487,7 +498,7 @@ public:
 
 int main() {
     Renter renter1;
-    //renter1.makeRenter();
+    renter1.makeRenter();
     //renter1.getRenterInfo();
     //renter1.removeRenter();
 
@@ -500,6 +511,6 @@ int main() {
 
     Book book;
     //book.addBook();
-    book.removeBook();
+    //book.removeBook();
     return 0;
 }
