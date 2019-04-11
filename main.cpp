@@ -37,7 +37,15 @@ public:
         fout.open("books.txt", std::ios_base::app);
         cout << "Welcome to registration. Please enter the values of the book you wish"
                 "to add to the shelf " << endl;
-        fout << "Title - " << "ISBN - " << "Author - " << "Pages - " << "Publish year" << endl;
+
+        if(fout.is_open()) {
+            fout.seekp(0, ios::end);
+            size_t size = fout.tellp();
+            if(size == 0) {
+                fout << "Title - ISBN - Author - Pages - Publish year" << endl;
+            }
+        }
+
         while (fout) {
             cout << "Enter 0 if you no longer wish to add more books,"
                     "if you wish to proceed adding new book press any key: " << endl;
@@ -56,11 +64,10 @@ public:
             cout << "Enter the year the book was published: " << endl;
             getline(cin, publishYear);
 
-            fout << title << " - " << isbnNumber << " - " << author << " - " << pages << " - " << publishYear << endl;
+            fout << title << " " << isbnNumber << " " << author << " " << pages << " " << publishYear << endl;
             //fout << "Date added to library: " << libraryID << endl;
             //time_t tt; struct tm * ti; time(&tt); ti = localtime(&tt);
             //librarian1.startDate = asctime(ti);
-            fout << endl;
             cout << "Book successfully added!" << endl;
         }
         fout.close();
@@ -95,20 +102,19 @@ public:
     }
 
     void removeBook() {
-        string name, fname, lname, phone, address, date, a6, a7, a8, a9, a10, a11;
+        string title, intitle, isbn, author, pages, publishYear;
         int x = 0;
 
         ifstream book("books.txt");
         ofstream temp("temp.txt");
 
         cout << "Enter name of the book you want to erase from database >" << endl;
-        cin >> fname;
+        cin >> intitle;
 
-        while(book >> name >> lname >> phone >> address >> date >> a6 >> a7 >> a8 >> a9 >> a10 >> a11) {
-            if(fname!=name) {
-                temp << name << ' ' << lname << ' ' << phone << ' ' << address << ' ' << date
-                     << ' ' << a6 << ' ' << a7 << ' ' << a8 << ' ' << a9 << ' ' << a10 << ' ' << a11 <<endl;
-            } if(fname==name) {
+        while(book >> title >> isbn >> author >> pages >> publishYear) {
+            if(intitle!=title) {
+                temp << title << ' ' << isbn << ' ' << author << ' ' << pages << ' ' << publishYear << endl;
+            } if(intitle==title) {
                 x = 1;
             }
         }
@@ -158,6 +164,14 @@ public:
         fout.open("librarian.txt", std::ios_base::app);
         cout << "Welcome to registration. Please fill in the information below: " << endl;
 
+        if(fout.is_open()) {
+            fout.seekp(0, ios::end);
+            size_t size = fout.tellp();
+            if(size == 0) {
+                fout << "First name - Last name - Address - Phonenumber - Employee ID - Workplace - Hire date"  << endl;
+            }
+        }
+
         while(fout) {
             cout << "Enter 0 if you no longer wish to add more members,"
                     "if you wish to proceed adding new member press any key: " << endl;
@@ -165,26 +179,20 @@ public:
             if(line == "0") {
                 break;
             }
-            cout << "Enter your first name: " << endl;
+            cout << "Enter the librarians first name: " << endl;
             getline(cin, firstName);
-            cout << "Enter your last name: " << endl;
+            cout << "Enter the librarians last name: " << endl;
             getline(cin, lastName);
-            cout << "Enter your address: " << endl;
+            cout << "Enter the librarians address: " << endl;
             getline(cin, address);
-            cout << "Enter your phone number: " << endl;
+            cout << "Enter the librarians phone number: " << endl;
             getline(cin, phoneNumber);
             cout << "Enter the library the employee will be working at " << endl;
             getline(cin, libraryID);
 
-            fout << "First name: " <<firstName << endl;
-            fout << "Last name: " << lastName << endl;
-            fout << "Address: " << address << endl;
-            fout << "Phone: " << phoneNumber << endl;
-            fout << "EmployeeID: " << employeeID << endl;
-            fout << "Works at library: " << libraryID << endl;
             time_t tt; struct tm * ti; time(&tt); ti = localtime(&tt);
             librarian1.startDate = asctime(ti);
-            fout << "Time hired: " << librarian1.startDate << endl;
+            fout << firstName << lastName <<  address <<  phoneNumber << employeeID << libraryID << librarian1.startDate << endl;
             employeeID++;
             cout << "Librarian successfully added!" << endl;
         }
@@ -275,31 +283,35 @@ public:
         string line;
 
         fout.open("member.txt", std::ios_base::app);
-        cout << "Welcome to registration. Please fill in the information below: " << endl;
+        cout << "Welcome to member registration. Please fill in the information below: " << endl;
+
+        if(fout.is_open()) {
+            fout.seekp(0, ios::end);
+            size_t size = fout.tellp();
+            if(size == 0) {
+                fout << "First name - Last name - Address - Phonenumber - Member ID - Registration date" << endl;
+            }
+        }
+
         while(fout) {
             cout << "Enter 0 if you no longer wish to add more members,"
-                    "if you wish to proceed adding new member press any key: " << endl;
+                    "if you wish to proceed adding a new member press any key: " << endl;
             getline(cin, line);
             if(line == "0") {
                 break;
             }
-            cout << "Enter your first name: " << endl;
+            cout << "Enter the memebers first name: " << endl;
             getline(cin, firstName);
-            cout << "Enter your last name: " << endl;
+            cout << "Enter the memembers last name: " << endl;
             getline(cin, lastName);
-            cout << "Enter your address: " << endl;
+            cout << "Enter the memembers address: " << endl;
             getline(cin, address);
-            cout << "Enter your phone number: " << endl;
+            cout << "Enter the memembers phone number: " << endl;
             getline(cin, phoneNumber);
 
-            fout << "First name: " <<firstName << endl;
-            fout << "Last name: " << lastName << endl;
-            fout << "Address: " << address << endl;
-            fout << "Phone: " << phoneNumber << endl;
-            fout << "MemberID: " << id << endl;
             time_t tt; struct tm * ti; time(&tt); ti = localtime(&tt);
             member1.registrationDate = asctime(ti);
-            fout << "Time registered: " << member1.registrationDate << endl;
+            fout << firstName << lastName <<  address << phoneNumber <<  id << member1.registrationDate << endl;
             id++;
             cout << "Member successfully added!" << endl;
         }
@@ -345,8 +357,8 @@ public:
 
         while(member >> name >> lname >> phone >> address >> date >> a6 >> a7 >> a8 >> a9 >> a10 >> a11) {
             if(fname!=name) {
-                temp << name << ' ' << lname << ' ' << phone << ' ' << address << ' ' << date
-                     << ' ' << a6 << ' ' << a7 << ' ' << a8 << ' ' << a9 << ' ' << a10 << ' ' << a11 <<endl;
+                temp << name << ' - ' << lname << ' - ' << phone << ' - ' << address << ' - ' << date
+                     << ' - ' << a6 << ' - ' << a7 << ' - ' << a8 << ' - ' << a9 << ' - ' << a10 << ' - ' << a11 <<endl;
             } if(fname==name) {
                 x = 1;
             }
@@ -393,9 +405,6 @@ public:
         fout.open("renter.txt", std::ios_base::app);
         cout << "Welcome to registration. Please fill in the information below: " << endl;
 
-        /**
-         * Legg til koden under i andre metodene
-         */
         if(fout.is_open()) {
             fout.seekp(0, ios::end);
             size_t size = fout.tellp();
@@ -427,8 +436,8 @@ public:
 
             time_t tt; struct tm * ti; time(&tt); ti = localtime(&tt);
             renter1.rentTime = asctime(ti);
-            fout << firstName << " - " << lastName << " - " << address << " - " << phoneNumber
-            << " - " << depositum << " - " << renter1.rentTime;
+            fout << firstName << " " << lastName << " " << address << " " << phoneNumber
+            << " " << depositum << " " << renter1.rentTime;
             cout << "Renter successfully added!" << endl;
         }
 
@@ -475,8 +484,8 @@ public:
 
         while(renter >> name >> lname >> phone >> address >> date >> a6 >> a7 >> a8 >> a9 >> a10 >> a11) {
             if(fname!=name) {
-                temp << name << ' - ' << lname << ' - ' << phone << ' - ' << address << ' - ' << date
-                << ' - ' << a6 << ' - ' << a7 << ' - ' << a8 << ' - ' << a9 << ' - ' << a10 << ' - ' << a11 <<endl;
+                temp << name << ' ' << lname << ' ' << phone << ' ' << address << ' ' << date
+                << ' ' << a6 << ' ' << a7 << ' ' << a8 << ' ' << a9 << ' ' << a10 << ' ' << a11 <<endl;
             } if(fname==name) {
                 x = 1;
             }
@@ -498,7 +507,7 @@ public:
 
 int main() {
     Renter renter1;
-    renter1.makeRenter();
+    //renter1.makeRenter();
     //renter1.getRenterInfo();
     //renter1.removeRenter();
 
@@ -511,6 +520,6 @@ int main() {
 
     Book book;
     //book.addBook();
-    //book.removeBook();
+    book.removeBook();
     return 0;
 }
