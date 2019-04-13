@@ -192,6 +192,7 @@ public:
             }
             fin.close();
         } else {
+            fin.close();
             cout << "You chose to not list any librarians. Have a nice day." << endl;
         }
 
@@ -294,7 +295,7 @@ public:
         ifstream fin;
         fin.open("member.txt");
 
-        cout << "Do you wish to list all the librarians? If so enter 1"
+        cout << "Do you wish to list all the members? If so enter 1"
                 ", if not enter 0 to exit";
         getline(cin, line);
         if(line == "1") {
@@ -302,7 +303,9 @@ public:
                 getline(fin, line);
                 cout << line << endl;
             }
-            cout << "You chose to not list any librarians. Have a nice day." << endl;
+            fin.close();
+        } else {
+            cout << "You chose to not list any members. Have a nice day." << endl;
             fin.close();
         }
     }
@@ -422,6 +425,8 @@ public:
                 getline(fin, line);
                 cout << line << endl;
             }
+            fin.close();
+        } else {
             cout << "You chose to not list any renter. Have a nice day." << endl;
             fin.close();
         }
@@ -473,6 +478,19 @@ public:
     }
 };
 
+class BookHandler {
+public:
+
+    void rentBook() {
+        ifstream fout;
+        fout.open("test.txt");
+        fout.open("member.txt");
+        fout.open("book.txt");
+    }
+};
+
+
+
 int main() {
     Renter renter1;
     //renter1.makeRenter();
@@ -482,7 +500,7 @@ int main() {
     Member member1;
     //member1.makeMember();
     //member1.removeMember();
-    member1.listMembers();
+    //member1.listMembers();
 
     Librarian librarian;
     //librarian.makeLibrarian();
@@ -493,5 +511,8 @@ int main() {
     //book.addBook();
     //book.removeBook();
     //book.listBooks();
+
+    BookHandler bookHandler;
+    bookHandler.rentBook();
     return 0;
 }
