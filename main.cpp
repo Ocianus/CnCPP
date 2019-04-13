@@ -481,12 +481,59 @@ public:
 class BookHandler {
 public:
 
-    void rentBook() {
-        ifstream fout;
-        fout.open("test.txt");
-        fout.open("member.txt");
-        fout.open("book.txt");
+    void loanBook() {
+        int offset, choice;
+        ifstream finbook;
+        finbook.open("books.txt");
+        ifstream finmember("member.txt");
+        ofstream fout("test.txt");
+        string search, line, name;
+
+        cout << "Enter the title of the book you wish to rent" << endl;
+        cin >> search;
+
+        if (finbook.is_open()) {
+            while (!finbook.eof()) {
+                getline(finbook, line);
+                if ((offset = line.find(search, 0)) != string::npos) {
+                    cout << "The book '" << search << "' has been found!" << endl;
+                    cout << "Do you wish to rent the book? Type 1 if you wish to rent it, 0 if not" << endl;
+                    cin >> choice;
+                    switch(choice) {
+                        case 1:
+                            cout << "Enter your name if youre a member" << endl;
+                            cin >> name;
+                            if(finmember.is_open()) {
+                                while(!finmember.eof()) {
+                                    getline(finmember, line);
+                                    if((offset = line.find(name, 0)) != string::npos) {
+                                        cout << "Member found. The book will now be registered on your name." << endl;
+
+                                    } else {
+                                        cout << "There was no member found with the name you entered." << endl;
+                                    } break;
+                                 } finmember.close();
+                            }
+                            break;
+                        case 0:
+                            cout << "You chose to not rent a book, you will be redirected back now.." << endl;
+                            break;
+                        default:
+                            break;
+                    }
+                } else {
+                    cout << "There was no book found matching the title you entered, please try again!" << endl;
+                }
+                break;
+            }
+            finbook.close();
+        } else {
+            cout << "Could not open file" << endl;
+            system("pause");
+        }
     }
+
+    void deliverBook() {}
 };
 
 
@@ -513,6 +560,6 @@ int main() {
     //book.listBooks();
 
     BookHandler bookHandler;
-    bookHandler.rentBook();
+    //bookHandler.rentBook();
     return 0;
 }
