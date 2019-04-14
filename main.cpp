@@ -487,12 +487,15 @@ public:
         finbook.open("books.txt");
         ifstream finmember("member.txt");
         ofstream fout("test.txt");
-        string search, line, name;
+        string search, line, fname;
+
+        int x = 0;
+        //string strTemp, temp, test;
+        string name, lname, phone, address1, address2, date1, date2, date3, date4, date5, date6;
 
         cout << "Enter the title of the book you wish to rent" << endl;
         cin >> search;
 
-        if (finbook.is_open()) {
             while (!finbook.eof()) {
                 getline(finbook, line);
                 if ((offset = line.find(search, 0)) != string::npos) {
@@ -502,18 +505,35 @@ public:
                     switch(choice) {
                         case 1:
                             cout << "Enter your name if youre a member" << endl;
-                            cin >> name;
-                            if(finmember.is_open()) {
-                                while(!finmember.eof()) {
-                                    getline(finmember, line);
-                                    if((offset = line.find(name, 0)) != string::npos) {
-                                        cout << "Member found. The book will now be registered on your name." << endl;
+                            cin >> fname;
+                           // if(finmember.is_open()) {
+                               // while (!finmember.eof()) {
+                                  //  getline(finmember, line);
+                               //     if ((offset = line.find(fname, 0)) != string::npos) {
+                                        //cout << "Member found. The book will now be registered on your name." << endl;
 
-                                    } else {
-                                        cout << "There was no member found with the name you entered." << endl;
-                                    } break;
-                                 } finmember.close();
-                            }
+                                        while (finmember >> name >> lname >> phone >> address1 >> address2 >> date1 >> date2 >> date3 >> date4 >> date5 >> date6) {
+                                            if (fname == name) {
+                                                fout << name << ' ' << lname << ' ' << phone << ' ' << address1 << ' ' << address2 << ' ' << date1 << ' ' << date2 << ' ' << date3 << ' ' << date4 << ' ' << date5 << ' ' << date6;
+                                            }
+                                            if (fname == name) {
+                                                x = 1;
+                                            }
+                                        }
+
+                                        finbook.close();
+                                        finmember.close();
+                                        fout.close();
+
+                                        if (x == 0) {
+                                            cout << "Name not found" << endl;
+                                        } else {
+                                            cout << "Name found" << endl;
+                                        }
+                               //     }
+                                    finmember.close();
+                           //     }
+                           // }
                             break;
                         case 0:
                             cout << "You chose to not rent a book, you will be redirected back now.." << endl;
@@ -527,11 +547,7 @@ public:
                 break;
             }
             finbook.close();
-        } else {
-            cout << "Could not open file" << endl;
-            system("pause");
         }
-    }
 
     void deliverBook() {}
 };
@@ -560,6 +576,6 @@ int main() {
     //book.listBooks();
 
     BookHandler bookHandler;
-    //bookHandler.rentBook();
+    bookHandler.loanBook();
     return 0;
 }
