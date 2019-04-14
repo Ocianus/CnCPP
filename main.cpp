@@ -17,8 +17,9 @@ public:
 
 class Book {
 public:
-    string isbnNumber, author, title, publishYear, pages;
+    string isbnNumber, authorfn, authorln, title, publishYear, pages;
 
+    /*
     void bookGetInfo() {
         cout << "Bookinformation" << endl;
         cout << "________________" << endl;
@@ -27,7 +28,7 @@ public:
         cout << "Title: " << title << endl;
         cout << "Number of pages: " << pages << endl;
         cout << "Year published: " << publishYear << endl;
-    }
+    } */
 
     void addBook() {
         Book book;
@@ -49,14 +50,16 @@ public:
             getline(cin, title);
             cout << "Enter ISBN number: " << endl;
             getline(cin, isbnNumber);
-            cout << "Enter name of author (first and last name, no middle name): " << endl;
-            getline(cin, author);
+            cout << "Enter first name of author (no middle name): " << endl;
+            getline(cin, authorfn);
+            cout << "Enter the last name of the author (no middle name): " << endl;
+            getline(cin, authorfn);
             cout << "Enter the number of pages: " << endl;
             getline(cin, pages);
             cout << "Enter the year the book was published: " << endl;
             getline(cin, publishYear);
 
-            fout << title << " " << isbnNumber << " " << author << " " << pages << " " << publishYear << endl;
+            fout << title << " " << isbnNumber << " " << authorfn << " " << authorln << " " << pages << " " << publishYear << endl;
             cout << "Book successfully added!" << endl;
         }
         fout.close();
@@ -92,7 +95,7 @@ public:
     }
 
     void removeBook() {
-        string title, intitle, isbn, author, pages, publishYear;
+        string title, intitle, isbn, authorfn, authorln, pages, publishYear;
         int x = 0;
 
         ifstream book("books.txt");
@@ -101,9 +104,9 @@ public:
         cout << "Enter name of the book you want to erase from database >" << endl;
         cin >> intitle;
 
-        while(book >> title >> isbn >> author >> pages >> publishYear) {
+        while(book >> title >> isbn >> authorfn >> authorln >> pages >> publishYear) {
             if(intitle!=title) {
-                temp << title << ' ' << isbn << ' ' << author << ' ' << pages << ' ' << publishYear << endl;
+                temp << title << ' ' << isbn << ' ' << authorfn << ' ' << authorln << ' ' << pages << ' ' << publishYear << endl;
             } if(intitle==title) {
                 x = 1;
             }
@@ -483,73 +486,88 @@ public:
 
     void loanBook() {
         int offset, choice;
-        ifstream finbook;
-        finbook.open("books.txt");
+        ifstream finbook("books.txt");
         ifstream finmember("member.txt");
+        ifstream fin("books.txt");
         ofstream fout("test.txt");
+        ofstream fout2("test2.txt");
         string search, line, fname;
+        bool exists = false;
 
         int x = 0;
-        //string strTemp, temp, test;
+        int y = 0;
         string name, lname, phone, address1, address2, date1, date2, date3, date4, date5, date6;
+        string title, intitle, isbn, authorfn, authorln, pages, publishYear;
 
         cout << "Enter the title of the book you wish to rent" << endl;
         cin >> search;
 
-            while (!finbook.eof()) {
-                getline(finbook, line);
-                if ((offset = line.find(search, 0)) != string::npos) {
-                    cout << "The book '" << search << "' has been found!" << endl;
-                    cout << "Do you wish to rent the book? Type 1 if you wish to rent it, 0 if not" << endl;
-                    cin >> choice;
-                    switch(choice) {
-                        case 1:
-                            cout << "Enter your name if youre a member" << endl;
-                            cin >> fname;
-                           // if(finmember.is_open()) {
-                               // while (!finmember.eof()) {
-                                  //  getline(finmember, line);
-                               //     if ((offset = line.find(fname, 0)) != string::npos) {
-                                        //cout << "Member found. The book will now be registered on your name." << endl;
-
-                                        while (finmember >> name >> lname >> phone >> address1 >> address2 >> date1 >> date2 >> date3 >> date4 >> date5 >> date6) {
-                                            if (fname == name) {
-                                                fout << name << ' ' << lname << ' ' << phone << ' ' << address1 << ' ' << address2 << ' ' << date1 << ' ' << date2 << ' ' << date3 << ' ' << date4 << ' ' << date5 << ' ' << date6;
-                                            }
-                                            if (fname == name) {
-                                                x = 1;
-                                            }
-                                        }
-
-                                        finbook.close();
-                                        finmember.close();
-                                        fout.close();
-
-                                        if (x == 0) {
-                                            cout << "Name not found" << endl;
-                                        } else {
-                                            cout << "Name found" << endl;
-                                        }
-                               //     }
-                                    finmember.close();
-                           //     }
-                           // }
-                            break;
-                        case 0:
-                            cout << "You chose to not rent a book, you will be redirected back now.." << endl;
-                            break;
-                        default:
-                            break;
-                    }
-                } else {
-                    cout << "There was no book found matching the title you entered, please try again!" << endl;
-                }
-                break;
+        while (!finbook.eof()) {
+            getline(finbook, line);
+            if ((offset = line.find(search, 0)) != string::npos) {
+                cout << "The book '" << search << "' has been found!" << endl;
+                exists = true;
             }
-            finbook.close();
         }
 
-    void deliverBook() {}
+        if(!exists) {
+            cout << "No book with the title youve entered was found!" << endl;
+        }
+
+        while(exists == true) {
+            cout << "Do you wish to rent the book? Type 1 if you wish to rent it, 0 if not" << endl;
+            cin >> choice;
+            switch (choice) {
+                case 1:
+                    cout << "Enter your name if youre a member" << endl;
+                    cin >> fname;
+
+                    while (fin >> title >> isbn >> authorfn >> authorln >> pages >> publishYear) {
+                        if (search == title) {
+                            y = 1;
+                            fout << title << ' ' << isbn << ' ' << authorfn << ' ' << authorln << ' ' << pages << ' ' << publishYear << ' ';
+                        }
+                        if (search == title) {
+                            x = 1;
+                        }
+                    }
+
+                    if (y == 1) {
+                        while (finmember >> name >> lname >> phone >> address1 >> address2 >> date1 >> date2 >> date3
+                        >> date4 >> date5 >> date6) {
+                            if (fname == name) {
+                                fout << name << ' ' << lname << ' ' << phone << ' ' << address1 << ' ' << address2
+                                << ' ' << date1 << ' ' << date2 << ' ' << date3 << ' ' << date4 << ' ' << date5
+                                << ' ' << date6;
+
+                            }
+                            if (fname == name) {
+                                x = 1;
+                            }
+                        }
+                    }
+
+                    finbook.close();
+                    finmember.close();
+                    fout.close();
+                    fout2.close();
+
+                    if (x == 0) {
+                        cout << "Name or title not found" << endl;
+                    } else {
+                        cout << "Name and title found" << endl;
+                    }
+                    exists = false;
+                    break;
+                case 0:
+                     cout << "You chose to not rent a book, you will be redirected back now.." << endl;
+                     exit(1);
+                    //break;
+                 default:break;
+            }
+        }
+    }
+
 };
 
 
