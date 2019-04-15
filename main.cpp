@@ -180,8 +180,9 @@ public:
         ifstream librarian("librarian.txt");
         ofstream temp("temp.txt");
 
-        cout << "Enter name of the librarian you want to erase from database >" << endl;
+        cout << "Enter the first and last name of the librarian you want to erase from database > " << endl;
         cin >> fname;
+        cin >> lname;
 
         while(librarian >> name >> lname >> phone >> address1 >> address2 >> date1 >> date2 >> date3 >> date4 >> date5 >> date6) {
             if(fname!=name) {
@@ -280,8 +281,9 @@ public:
         ifstream member("member.txt");
         ofstream temp("temp.txt");
 
-        cout << "Enter name of the member you want to erase from database >" << endl;
+        cout << "Enter the first and last name of the member you want to erase from database >" << endl;
         cin >> fname;
+        cin >> lname;
 
         while(member >> name >> lname >> phone >> address1 >> address2 >> date1 >> date2 >> date3 >> date4 >> date5) {
             if(fname!=name) {
