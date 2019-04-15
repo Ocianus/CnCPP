@@ -19,17 +19,6 @@ class Book {
 public:
     string isbnNumber, authorfn, authorln, title, publishYear, pages;
 
-    /*
-    void bookGetInfo() {
-        cout << "Bookinformation" << endl;
-        cout << "________________" << endl;
-        cout << "ISBNnumber: " << isbnNumber << endl;
-        cout << "Auther: " << author << endl;
-        cout << "Title: " << title << endl;
-        cout << "Number of pages: " << pages << endl;
-        cout << "Year published: " << publishYear << endl;
-    } */
-
     void addBook() {
         Book book;
         ofstream fout;
@@ -130,26 +119,8 @@ public:
 class Librarian: public Person {
 public:
     string startDate, salary, libraryID;
-    int employeeID = 1;
 
-    void getLibrarianInfo() {
-        cout << "Information regarding librarian" << endl;
-        cout << "________________________________" << endl;
-        cout << "First name: " << firstName << endl;
-        cout << "Last name: " << lastName << endl;
-        cout << "Address: " << address << endl;
-        cout << "Phone number " << phoneNumber << endl;
-        cout << "Start date: " << startDate << endl;
-        cout << "Salary: " << salary << endl;
-        cout << "Employee ID: " << employeeID << endl;
-        cout << "Works at library: " << libraryID << endl;
-    }
-
-    /**
-     * EmployeeID fungerer ikke
-     */
     void makeLibrarian() {
-        int employeeID = 1;
         Librarian librarian1;
         ofstream fout;
         string line;
@@ -177,8 +148,7 @@ public:
 
             time_t tt; struct tm * ti; time(&tt); ti = localtime(&tt);
             librarian1.startDate = asctime(ti);
-            fout << firstName << " " << lastName << " " <<  address << " " << phoneNumber << " " << employeeID << " " << libraryID << " " << librarian1.startDate;
-            employeeID++;
+            fout << firstName << " " << lastName << " " <<  address << " " << phoneNumber << " " << libraryID << " " << librarian1.startDate;
             cout << "Librarian successfully added!" << endl;
         }
         fout.close();
@@ -491,9 +461,20 @@ public:
     void loanBook() {
         BookHandler bookHandler;
         ifstream finbook("books.txt"), fin("books.txt"), finmember("member.txt");
-        ofstream fout("test.txt", std::ios_base::app);
+        ofstream fout("loanedBooks.txt", std::ios_base::app), temp("temp.txt");
+
         bool exists = false;
-        int y = 0, offset, choice;
+        int y = 0, offset, choice, length;
+
+
+        fin.seekg(0, ios::end);
+        length = fin.tellg();
+
+        if(length == 0) {
+            cout << "There is currently no books available at the library at the current time. Please come back later." << endl;
+            exit(1);
+        }
+
 
         cout << "Enter the title of the book you wish to rent> " << endl;
         cin >> search;
@@ -542,17 +523,32 @@ public:
                                 ti = localtime(&tt);
                                 bookHandler.registrationDate = asctime(ti);
                                 fout << title << ' ' << isbn << ' ' << authorfn << ' ' << authorln << ' ' << pages
-                                     << ' ' << publishYear << ' ' << " | Loaned from: " << bookHandler.registrationDate;
+                                     << ' ' << publishYear << ' ' << " | Loaned from: " << bookHandler.registrationDate << endl;
+
+
                             }
+
+                            if(search != title) {
+                                temp <<  title << ' ' << isbn << ' ' << authorfn << ' ' << authorln << ' ' << pages
+                                     << ' ' << publishYear;
+                            }
+
                             if (search == title) {
                                 x = 1;
                             }
                         }
                     }
 
+                    fin.clear();
+                    fin.seekg(0, ios::beg);
+                    fin.close();
                     finbook.close();
                     finmember.close();
                     fout.close();
+                    temp.close();
+                    remove("books.txt");
+                    rename("temp.txt", "books.txt");
+
 
                     if (x == 0) {
                         cout << "Name or title not found, try again!" << endl;
@@ -564,7 +560,6 @@ public:
                 case 0:
                     cout << "You chose to not rent a book, you will be redirected back now.." << endl;
                     exit(1);
-                    //break;
                 default:
                     break;
             }
@@ -573,9 +568,9 @@ public:
 
     void deliverBook() {
         int offset, choice;
-        ifstream finbook("books.txt");
+        fstream frwbooks("books.txt", std::ios_base::app);
         ifstream finmember("member.txt");
-        fstream frwloans("test.txt"), loans("test.txt");
+        fstream frwloans("loanedBooks.txt"), loans("loanedBooks.txt");
         ofstream temp("temp.txt");
         bool memberExists = false;
         string element1, element2, element3, element4, element5, element6, element7, element8;
@@ -623,6 +618,7 @@ public:
                                  << ' ' << element5 << ' ' << element6 << ' ' << element7 << ' ' << element8;
                         }
                         if (fname == name) {
+                            frwbooks << title << ' ' << isbn << ' ' << authorfn << ' ' << authorln << ' ' << pages << ' ' << publishYear << endl;
                             x = 1;
                         }
                     }
@@ -632,8 +628,9 @@ public:
                     frwloans.close();
                     loans.close();
                     temp.close();
-                    remove("test.txt");
-                    rename("temp.txt", "test.txt");
+                    frwbooks.close();
+                    remove("loanedBooks.txt");
+                    rename("temp.txt", "lonaedBooks.txt");
 
                     if (x == 0) {
                         cout << "An error occoured while attempting to return the book. Please try again!" << endl;
@@ -651,6 +648,18 @@ public:
         }
     }
 
+    void listCurrentLoans() {
+        ifstream loaned("loanedBooks.txt");
+        if(!loaned) {
+            cerr << "Unable to open the file loanedBooks.txt";
+            exit(1);
+        }
+
+        if(loaned.is_open()) {
+            cout << "First and last name - Address - Phone number - Date og registration - Title - ISBN - Author - Pages - Publish Year - Date loaned " << endl;
+            cout << loaned.rdbuf();
+        }
+    }
 };
 
 
@@ -678,6 +687,7 @@ int main() {
 
     BookHandler bookHandler;
     //bookHandler.loanBook();
-    bookHandler.deliverBook();
+    //bookHandler.deliverBook();
+    bookHandler.listCurrentLoans();
     return 0;
 }
