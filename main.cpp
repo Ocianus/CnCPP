@@ -319,7 +319,8 @@ public:
     void loanBook() {
         BookHandler bookHandler;
         ifstream finbook("books.txt"), fin("books.txt"), finmember("member.txt");
-        ofstream fout("loanedBooks.txt", std::ios_base::app), temp("temp.txt");
+        ofstream fout("loanedBooks.txt", std::ios_base::app), temp("temp.txt"), log("log.txt", std::ios_base::app);
+
 
         bool exists = false;
         int y = 0, offset, choice, flag = 0;
@@ -354,6 +355,8 @@ public:
                             y = 1;
                             fout << name << ' ' << lname << ' ' << phone << ' ' << address1 << ' ' << address2
                                  << ' ' << date1 << ' ' << date2 << ' ' << date3 << ' ' << date4 << ' ' << date5 << ' ';
+                            log << name << ' ' << lname << ' ' << phone << ' ' << address1 << ' ' << address2
+                                << ' ' << date1 << ' ' << date2 << ' ' << date3 << ' ' << date4 << ' ' << date5 << ' ';
                         }
                         if (fname == name) {
                             x = 1;
@@ -370,6 +373,8 @@ public:
                                 bookHandler.registrationDate = asctime(ti);
                                 fout << title << ' ' << isbn << ' ' << authorfn << ' ' << authorln << ' ' << pages
                                      << ' ' << publishYear << ' ' << "| Loaned from: " << bookHandler.registrationDate;
+                                log << title << ' ' << isbn << ' ' << authorfn << ' ' << authorln << ' ' << pages
+                                    << ' ' << publishYear << ' ' << "| Loaned from: " << bookHandler.registrationDate;
                             }
 
                             if(search != title) {
@@ -574,9 +579,9 @@ int main() {
     //book.listBooks();
 
     BookHandler bookHandler;
-    //bookHandler.loanBook();
+    bookHandler.loanBook();
     //bookHandler.deliverBook();
     //bookHandler.listCurrentLoans();
-    bookHandler.listCurrentLoansByName();
+    //bookHandler.listCurrentLoansByName();
     return 0;
 }
