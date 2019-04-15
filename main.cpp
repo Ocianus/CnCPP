@@ -321,16 +321,10 @@ public:
         ofstream fout("loanedBooks.txt", std::ios_base::app), temp("temp.txt");
 
         bool exists = false;
-        int y = 0, offset, choice, length;
-/*
-        fin.seekg(0, ios::end);
-        length = fin.tellg();
+        int y = 0, offset, choice;
 
-        if(length == 0) {
-            cout << "There is currently no books available at the library at the current time. Please come back later." << endl;
-            exit(1);
-        }
-*/
+
+
         cout << "Enter the title of the book you wish to rent> " << endl;
         cin >> search;
 
@@ -419,17 +413,16 @@ public:
 
     void deliverBook() {
         int offset, choice;
-        fstream frwbooks("books.txt", std::ios_base::app), frwloans("loanedBooks.txt"), loans("loanedBooks.txt");
+        fstream frwbooks("books.txt", std::ios_base::app);
         ifstream finmember("member.txt");
-        //fstream frwloans("loanedBooks.txt"), loans("loanedBooks.txt");
+        ifstream frwloans("loanedBooks.txt");
+        fstream loans("loanedBooks.txt");
         ofstream temp("temp.txt");
-        bool memberExists = false;
+        bool bookExists = false;
         string element1, element2, element3, element4, element5, element6, element7, element8;
 
         cout << "Hello, what is the title of the book would you like to deliver? >" << endl;
         cin >> title;
-
-        bool bookExists = false;
 
         while (!frwloans.eof()) {
             getline(frwloans, line);
@@ -448,7 +441,7 @@ public:
 
         while (bookExists) {
             int userInput;
-            cout << "All data has been found, do you wish to complete the retun? Press 1 if yes, 0 if no `>" << endl;
+            cout << "All data has been found, do you wish to complete the retun? Press 1 if yes, 0 if no >" << endl;
             cin >> userInput;
             switch (userInput) {
                 case 1:
@@ -481,7 +474,7 @@ public:
                     temp.close();
                     frwbooks.close();
                     remove("loanedBooks.txt");
-                    rename("temp.txt", "lonaedBooks.txt");
+                    rename("temp.txt", "loanedBooks.txt");
 
                     if (x == 0) {
                         cout << "An error occoured while attempting to return the book. Please try again!" << endl;
