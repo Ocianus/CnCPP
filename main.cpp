@@ -23,22 +23,22 @@ public:
 
         while (books) {
             cout << "Enter 0 if you no longer wish to add more books,"
-                    "if you wish to proceed adding a new book press any key: " << endl;
+                    "if you wish to proceed adding a new book press any key > " << endl;
             getline(cin, line);
             if (line == "0") {
                 break;
             }
-            cout << "Enter title of the book> " << endl;
+            cout << "Enter title of the book > " << endl;
             getline(cin, title);
-            cout << "Enter ISBN number> " << endl;
+            cout << "Enter ISBN number > " << endl;
             getline(cin, isbnNumber);
-            cout << "Enter first name of author (no middle name)> " << endl;
+            cout << "Enter first name of author (no middle name) > " << endl;
             getline(cin, authorfn);
-            cout << "Enter the last name of the author (no middle name): " << endl;
+            cout << "Enter the last name of the author (no middle name) > " << endl;
             getline(cin, authorfn);
-            cout << "Enter the number of pages: " << endl;
+            cout << "Enter the number of pages > " << endl;
             getline(cin, pages);
-            cout << "Enter the year the book was published: " << endl;
+            cout << "Enter the year the book was published > " << endl;
             getline(cin, publishYear);
 
             books << title << " " << isbnNumber << " " << authorfn << " " << authorln << " " << pages << " " << publishYear << endl;
@@ -48,7 +48,7 @@ public:
         ifstream fin("books.txt");
 
         cout << "Do you wish to list all the books in the system? If so enter 1"
-                ", if not enter 0 to exit";
+                ", if not enter 0 to exit > ";
 
         getline(cin, line);
         if (line == "1") {
@@ -65,7 +65,7 @@ public:
     void listBooks() {
         ifstream books("books.txt");
         if(!books) {
-            cerr << "Unable to open the file books.txt";
+            cerr << "Unable to open the file books.txt!";
             exit(1);
         }
 
@@ -107,7 +107,6 @@ public:
     }
 };
 
-
 class Librarian: public Person {
 public:
     string startDate, libraryID;
@@ -117,7 +116,7 @@ public:
         string line;
         ofstream librarianw("librarian.txt", std::ios_base::app);
 
-        cout << "Welcome to registration. Please fill in the information below: " << endl;
+        cout << "Welcome to registration for librarians. Please fill in the information below: " << endl;
 
         while(librarianw) {
             cout << "Enter 0 if you no longer wish to add more members,"
@@ -126,15 +125,15 @@ public:
             if(line == "0") {
                 break;
             }
-            cout << "Enter the librarian's first name> " << endl;
+            cout << "Enter the librarian's first name > " << endl;
             getline(cin, firstName);
-            cout << "Enter the librarian's last name> " << endl;
+            cout << "Enter the librarian's last name > " << endl;
             getline(cin, lastName);
-            cout << "Enter the librarian's address> " << endl;
+            cout << "Enter the librarian's address > " << endl;
             getline(cin, address);
-            cout << "Enter the librarian's phone number: " << endl;
+            cout << "Enter the librarian's phone number > " << endl;
             getline(cin, phoneNumber);
-            cout << "Enter the name of the city the library the employee will be working at is located " << endl;
+            cout << "Enter the name of the city the library the employee will be working at is located > " << endl;
             getline(cin, libraryID);
 
             time_t tt; struct tm * ti; time(&tt); ti = localtime(&tt);
@@ -146,7 +145,7 @@ public:
         ifstream librarianr("librarian.txt");
 
         cout << "Do you wish to list all the librarians? If so enter 1"
-                ", if not enter 0 to exit> ";
+                ", if not enter 0 to exit > ";
         getline(cin, line);
         if (line == "1") {
             while(librarianr) {
@@ -169,13 +168,13 @@ public:
         }
 
         if(fout.is_open()) {
-            cout << "First and last name - Address - Phone number - Employee ID - Date hired" << endl;
+            cout << "First and last name - Address - Phone number -  Date hired" << endl;
             cout << fout.rdbuf();
         }
     }
 
     void removeLibrarian() {
-        string name, fname, lname, phone, address1, address2, date1, date2, date3, date4, date5, date6, date7;
+        string name, fname, lname, phone, address1, address2, date1, date2, date3, date4, date5, date6;
         int x = 0;
 
         ifstream librarian("librarian.txt");
@@ -184,10 +183,10 @@ public:
         cout << "Enter name of the librarian you want to erase from database >" << endl;
         cin >> fname;
 
-        while(librarian >> name >> lname >> phone >> address1 >> address2 >> date1 >> date2 >> date3 >> date4 >> date5 >> date6 >> date7) {
+        while(librarian >> name >> lname >> phone >> address1 >> address2 >> date1 >> date2 >> date3 >> date4 >> date5 >> date6) {
             if(fname!=name) {
                 temp << name << ' ' << lname << ' ' << phone << ' ' << address1 << ' ' << address2
-                     << ' ' << date1 << ' ' << date2 << ' ' << date3 << ' ' << date4 << ' ' << date5 << ' ' << date6 << ' ' << date7 <<endl;
+                     << ' ' << date1 << ' ' << date2 << ' ' << date3 << ' ' << date4 << ' ' << date5 << ' ' << date6  <<endl;
             } if(fname==name) {
                 x = 1;
             }
@@ -215,7 +214,6 @@ public:
         Member member1;
         ofstream fout;
         string line;
-        int id = 1;
 
         fout.open("member.txt", std::ios_base::app);
         cout << "Welcome to registration for members. Please fill in your personal information below: " << endl;
@@ -238,10 +236,10 @@ public:
 
             time_t tt; struct tm * ti; time(&tt); ti = localtime(&tt);
             member1.registrationDate = asctime(ti);
-            fout << firstName << " " <<  lastName << " " << address << " " << phoneNumber << " " << id << " " << member1.registrationDate;
-            id++;
+            fout << firstName << " " <<  lastName << " " << address << " " << phoneNumber << " " << member1.registrationDate;
             cout << "Member successfully added!" << endl;
         }
+
         fout.close();
         ifstream fin;
         fin.open("member.txt");
@@ -270,13 +268,13 @@ public:
         }
 
         if(fout.is_open()) {
-            cout << "First and last name - Address - Phone number - Member ID - Date registered" << endl;
+            cout << "First and last name - Address - Phone number - Date registered" << endl;
             cout << fout.rdbuf();
         }
     }
 
     void removeMember() {
-        string name, fname, lname, phone, address1, address2, date1, date2, date3, date4, date5, date6;
+        string name, fname, lname, phone, address1, address2, date1, date2, date3, date4, date5;
         int x = 0;
 
         ifstream member("member.txt");
@@ -285,10 +283,10 @@ public:
         cout << "Enter name of the member you want to erase from database >" << endl;
         cin >> fname;
 
-        while(member >> name >> lname >> phone >> address1 >> address2 >> date1 >> date2 >> date3 >> date4 >> date5 >> date6) {
+        while(member >> name >> lname >> phone >> address1 >> address2 >> date1 >> date2 >> date3 >> date4 >> date5) {
             if(fname!=name) {
                 temp << name << ' ' << lname << ' ' << phone << ' ' << address1 << ' ' << address2
-                     << ' ' << date1 << ' ' << date2 << ' ' << date3 << ' ' << date4 << ' ' << date5 << ' ' << date6 <<endl;
+                     << ' ' << date1 << ' ' << date2 << ' ' << date3 << ' ' << date4 << ' ' << date5 << ' ' << endl;
             } if(fname==name) {
                 x = 1;
             }
@@ -310,9 +308,10 @@ public:
 
 class BookHandler {
 public:
-    string fname, name, lname, phone, address1, address2, date1, date2, date3, date4, date5, date6;
+    string fname, name, lname, phone, address1, address2, date1, date2, date3, date4, date5;
     string title, isbn, authorfn, authorln, pages, publishYear;
     string search, line, registrationDate;
+    string element1, element2, element3, element4, element5, element6, element7, element8;
     int x = 0;
 
     void loanBook() {
@@ -321,9 +320,7 @@ public:
         ofstream fout("loanedBooks.txt", std::ios_base::app), temp("temp.txt");
 
         bool exists = false;
-        int y = 0, offset, choice;
-
-
+        int y = 0, offset, choice, flag = 0;
 
         cout << "Enter the title of the book you wish to rent> " << endl;
         cin >> search;
@@ -337,7 +334,7 @@ public:
         }
 
         if (!exists) {
-            cout << "No book with the title youve entered was found!" << endl;
+            cout << "No book with the title you've entered was found!" << endl;
         }
 
         while (exists) {
@@ -350,12 +347,11 @@ public:
                     cin >> lname;
 
                     while (finmember >> name >> lname >> phone >> address1 >> address2 >> date1 >> date2 >> date3
-                                     >> date4 >> date5 >> date6) {
+                                     >> date4 >> date5) {
                         if (fname == name) {
                             y = 1;
                             fout << name << ' ' << lname << ' ' << phone << ' ' << address1 << ' ' << address2
-                                 << ' ' << date1 << ' ' << date2 << ' ' << date3 << ' ' << date4 << ' ' << date5 << ' '
-                                 << date6 << ' ';
+                                 << ' ' << date1 << ' ' << date2 << ' ' << date3 << ' ' << date4 << ' ' << date5 << ' ';
                         }
                         if (fname == name) {
                             x = 1;
@@ -419,7 +415,6 @@ public:
         fstream loans("loanedBooks.txt");
         ofstream temp("temp.txt");
         bool bookExists = false;
-        string element1, element2, element3, element4, element5, element6, element7, element8;
 
         cout << "Hello, what is the title of the book would you like to deliver? >" << endl;
         cin >> title;
@@ -438,7 +433,6 @@ public:
             //exit(1);
         }
 
-
         while (bookExists) {
             int userInput;
             cout << "All data has been found, do you wish to complete the retun? Press 1 if yes, 0 if no >" << endl;
@@ -450,13 +444,13 @@ public:
                     cin >> lname;
 
                     while (loans >> name >> lname >> address1 >> address2 >> phone >> date1 >> date2 >> date3 >> date4
-                                    >> date5 >> date6 >> title >> isbn >> authorfn >> authorln >> pages >> publishYear
+                                    >> date5 >> title >> isbn >> authorfn >> authorln >> pages >> publishYear
                                     >> element1 >> element2 >> element3 >> element4 >> element5 >> element6 >> element7
                                     >> element8) {
                         if (fname != name) {
                             temp << name << ' ' << lname << ' ' << address1 << ' ' << address2 << ' ' << phone << ' ' << date1
                                  << ' ' << date2 << ' ' << date3 << ' '
-                                 << date4 << ' ' << date5 << ' ' << date6 << ' ' << title << ' ' << isbn << ' ' << authorfn
+                                 << date4 << ' ' << date5 << ' ' << title << ' ' << isbn << ' ' << authorfn
                                  << ' ' << authorln << ' ' << pages << ' '
                                  << publishYear << ' ' << element1 << ' ' << element2 << ' ' << element3 << ' ' << element4
                                  << ' ' << element5 << ' ' << element6 << ' ' << element7 << ' ' << element8;
@@ -504,9 +498,62 @@ public:
             cout << loaned.rdbuf();
         }
     }
+
+    void listCurrentLoansByName() {
+        ifstream loaned("loanedBooks.txt");
+        ifstream loanedBooks("loanedBooks.txt");
+        bool nameExists = false;
+        int offset;
+
+        cout << "Enter your first and last name to see all active loans> " << endl;
+        cin >> fname >> lname;
+        search = fname + " " + lname;
+
+        while (!loaned.eof()) {
+            getline(loaned, line);
+            if ((offset = line.find(search, 0)) != string::npos) {
+                cout << "The name '" << search << "' has been found!" << endl;
+                nameExists = true;
+                break;
+            }
+        }
+
+        if (!nameExists) {
+            cout << "No member with the name you've entered was found!" << endl;
+            exit(1);
+        }
+
+        while (nameExists) {
+            while (loanedBooks >> name >> lname >> address1 >> address2 >> phone >> date1 >> date2 >> date3 >> date4
+                         >> date5 >> title >> isbn >> authorfn >> authorln >> pages >> publishYear
+                         >> element1 >> element2 >> element3 >> element4 >> element5 >> element6 >> element7
+                         >> element8) {
+                if (search == name + " " + lname) {
+                    cout << name << ' ' << lname << ' ' << address1 << ' ' << address2 << ' ' << phone << ' ' << date1
+                         << ' ' << date2 << ' ' << date3 << ' '
+                         << date4 << ' ' << date5 << ' ' << title << ' ' << isbn << ' ' << authorfn
+                         << ' ' << authorln << ' ' << pages << ' '
+                         << publishYear << ' ' << element1 << ' ' << element2 << ' ' << element3 << ' ' << element4
+                         << ' ' << element5 << ' ' << element6 << ' ' << element7 << ' ' << element8 << endl;
+                }
+
+                if (fname == name) {
+                    x = 1;
+                }
+            }
+            nameExists = false;
+        }
+
+        loaned.close();
+        loanedBooks.close();
+
+        if(x == 0) {
+            cout << "An error occoured while attmepting to retrieve the data!" << endl;
+        } else {
+            cout << "All active loans successfully printed!" << endl;
+        }
+    }
 };
-
-
 
 int main() {
     Member member1;
@@ -526,7 +573,8 @@ int main() {
 
     BookHandler bookHandler;
     //bookHandler.loanBook();
-    bookHandler.deliverBook();
+    //bookHandler.deliverBook();
     //bookHandler.listCurrentLoans();
+    bookHandler.listCurrentLoansByName();
     return 0;
 }
