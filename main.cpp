@@ -205,6 +205,20 @@ public:
             cout << "Librarian data has been deleted!" << endl;
         }
     }
+
+    void listAllPreviousLoans() {
+        ifstream log;
+        log.open("log.txt");
+        if(!log) {
+            cerr << "Unable to open the file member.txt";
+            exit(1);
+        }
+
+        if(log.is_open()) {
+            cout << "First and last name - Address - Phone number - Date registered - Title - ISBN - Authors first and last name - Pages - Publish year - Date loaned from" << endl;
+            cout << log.rdbuf();
+        }
+    }
 };
 
 class Member: public Person {
